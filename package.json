@@ -11,8 +11,6 @@
     "eslint:fix": "yarn eslint --fix",
     "prettier": "prettier --check --ignore-path .gitignore '**/*.json'",
     "prettier:fix": "yarn prettier --write",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
     "cz": "git-cz"
   },
   "lint-staged": {
@@ -34,7 +32,6 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@types/jest": "^25.1.4",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "commitizen": "^4.0.3",
@@ -43,10 +40,8 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
-    "jest": "^25.2.1",
     "lint-staged": "^10.0.9",
     "prettier": "^2.0.2",
-    "ts-jest": "^25.2.1",
     "ts-node": "^8.8.1",
     "typescript": "^3.8.3"
   },

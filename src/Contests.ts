@@ -66,3 +66,15 @@ export function saveContests(contests: ContestData[]): void {
     JSON.stringify(savedData, null, 2),
   )
 }
+
+export function getSavedNotNotifiedCreating(): ContestData[] {
+  return getSavedContests().filter(
+    (contest): boolean => contest.isNotifiedCreating === false,
+  )
+}
+
+export function getSavedNotNotifiedJustBefore(): ContestData[] {
+  return getSavedContests().filter(
+    (contest): boolean => contest.isNotifiedJustBefore === false,
+  )
+}

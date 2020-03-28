@@ -1,13 +1,19 @@
 import moment from "moment"
+import path from "path"
+import fs from "fs"
 import request from "request-promise"
 import { JSDOM } from "jsdom"
+
+const dataFileName = "contests.json"
 
 interface ContestData {
   date: moment.Moment
   title: string
+  isNotifiedCreating?: boolean
+  isNotifiedJustBefore?: boolean
 }
 
-async function getContests(): Promise<ContestData[]> {
+export async function contests(): Promise<ContestData[]> {
   const url = "https://atcoder.jp/contests/?lang=ja"
   const body = await request(url)
   const dom = new JSDOM(body)
@@ -24,4 +30,16 @@ async function getContests(): Promise<ContestData[]> {
   })
 }
 
-export default getContests
+export function getSavedContests(): ContestData[] {
+  let strData
+  try {
+    strData = fs.readFileSync(path.resolve(dataFileName), "utf-8")
+  } catch {
+    return []
+  }
+  return JSON.parse(strData).map((contest: ContestData) => {
+    const strDate = contest.date
+    contest.date = moment(strDate)
+    return contest
+  })
+}

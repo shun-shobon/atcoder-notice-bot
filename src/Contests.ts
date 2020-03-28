@@ -13,7 +13,7 @@ interface ContestData {
   isNotifiedJustBefore?: boolean
 }
 
-export async function contests(): Promise<ContestData[]> {
+export async function getContests(): Promise<ContestData[]> {
   const url = "https://atcoder.jp/contests/?lang=ja"
   const body = await request(url)
   const dom = new JSDOM(body)
@@ -42,4 +42,27 @@ export function getSavedContests(): ContestData[] {
     contest.date = moment(strDate)
     return contest
   })
+}
+
+export function saveContests(contests: ContestData[]): void {
+  const savedData = getSavedContests()
+  const unsavedContests: ContestData[] = contests
+    .filter((contest): boolean => {
+      if (!savedData.length) return true
+      return savedData.some((data) => data.title !== contest.title)
+    })
+    .map(
+      (contest): ContestData => {
+        return {
+          ...contest,
+          isNotifiedCreating: false,
+          isNotifiedJustBefore: false,
+        }
+      },
+    )
+  savedData.push(...unsavedContests)
+  fs.writeFileSync(
+    path.resolve(dataFileName),
+    JSON.stringify(savedData, null, 2),
+  )
 }

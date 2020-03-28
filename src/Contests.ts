@@ -21,13 +21,15 @@ export async function getContests(): Promise<ContestData[]> {
     dom.window.document.querySelectorAll(
       "#contest-table-upcoming > div > div > table > tbody > tr",
     ),
-  ).map((contest) => {
-    const [strDate, title] = Array.from(contest.querySelectorAll("a")).map(
-      (a) => a.text,
-    )
-    const date = moment(strDate)
-    return { date, title }
-  })
+  ).map(
+    (contest): ContestData => {
+      const [strDate, title] = Array.from(contest.querySelectorAll("a")).map(
+        (a) => a.text,
+      )
+      const date = moment(strDate)
+      return { date, title }
+    },
+  )
 }
 
 export function getSavedContests(): ContestData[] {
@@ -37,22 +39,24 @@ export function getSavedContests(): ContestData[] {
   } catch {
     return []
   }
-  return JSON.parse(strData).map((contest: ContestData) => {
-    const strDate = contest.date
-    contest.date = moment(strDate)
-    return contest
-  })
+  return JSON.parse(strData).map(
+    (contest: ContestData): ContestData => {
+      const strDate = contest.date
+      contest.date = moment(strDate)
+      return contest
+    },
+  )
 }
 
 export function saveContests(contests: ContestData[]): void {
   const savedData = getSavedContests()
   const unsavedContests: ContestData[] = contests
-    .filter((contest): boolean => {
+    .filter((contest: ContestData): boolean => {
       if (!savedData.length) return true
       return savedData.some((data) => data.title !== contest.title)
     })
     .map(
-      (contest): ContestData => {
+      (contest: ContestData): ContestData => {
         return {
           ...contest,
           isNotifiedCreating: false,
@@ -69,12 +73,12 @@ export function saveContests(contests: ContestData[]): void {
 
 export function getSavedNotNotifiedCreating(): ContestData[] {
   return getSavedContests().filter(
-    (contest): boolean => contest.isNotifiedCreating === false,
+    (contest: ContestData): boolean => contest.isNotifiedCreating === false,
   )
 }
 
 export function getSavedNotNotifiedJustBefore(): ContestData[] {
   return getSavedContests().filter(
-    (contest): boolean => contest.isNotifiedJustBefore === false,
+    (contest: ContestData): boolean => contest.isNotifiedJustBefore === false,
   )
 }

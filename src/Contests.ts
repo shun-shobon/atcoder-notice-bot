@@ -59,3 +59,12 @@ export function getUnsavedContests(
     ),
   )
 }
+
+export async function saveContests(contests: ContestData[]): Promise<void> {
+  for (const contest of contests) {
+    await database.collection(contestSavePath).add({
+      date: contest.date.toDate(),
+      title: contest.title,
+    })
+  }
+}

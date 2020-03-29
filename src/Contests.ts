@@ -44,3 +44,14 @@ export async function getSavedContests(): Promise<ContestData[]> {
   })
   return returnData
 }
+
+export async function getUnsavedContests(): Promise<ContestData[]> {
+  const savedContests = await getSavedContests()
+  const contests = await getContests()
+  if (!savedContests.length) return contests
+  return contests.filter((contest: ContestData) =>
+    savedContests.some(
+      (savedContest: ContestData) => savedContest.title !== contest.title,
+    ),
+  )
+}

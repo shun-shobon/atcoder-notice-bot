@@ -1,10 +1,17 @@
 {
   "license": "MIT",
   "private": true,
+  "main": "dist/index.js",
+  "engines": {
+    "node": "10"
+  },
   "scripts": {
-    "start": "node -r ./bootstrap.js dist/index.js",
+    "start": "yarn shell",
     "build": "tsc",
     "dev": "tsc --watch",
+    "serve": "yarn build && firebase emulators:start --only functions",
+    "shell": "yarn build && firebase functions:shell",
+    "deploy": "yarn build && firebase deploy --only functions",
     "lint": "yarn prettier && yarn eslint",
     "lint:fix": "yarn prettier:fix && yarn eslint:fix",
     "eslint": "eslint --ignore-path .gitignore '**/*.{ts,js}'",
@@ -42,6 +49,7 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "firebase-tools": "^7.16.1",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.9",
     "prettier": "^2.0.2",
@@ -50,10 +58,10 @@
   },
   "dependencies": {
     "firebase-admin": "^8.10.0",
+    "firebase-functions": "^3.5.0",
     "jsdom": "^16.2.1",
     "moment": "^2.24.0",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5",
-    "tsconfig-paths": "^3.9.0"
+    "request-promise": "^4.2.5"
   }
 }

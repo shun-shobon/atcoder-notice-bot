@@ -5,11 +5,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "baseUrl": "./src",
-    "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
-    },
+    "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   },

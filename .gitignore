@@ -116,6 +116,5 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
-
-# token
-firestore-token.json
+# Firebase cache
+.firebase/

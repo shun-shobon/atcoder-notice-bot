@@ -1,13 +1,18 @@
 import moment from "moment"
 import request from "request-promise"
+import { readFileSync } from "fs"
+import { resolve } from "path"
+import admin from "firebase-admin"
 import { JSDOM } from "jsdom"
 
 interface ContestData {
   date: moment.Moment
   title: string
-  isNotifiedCreating?: boolean
-  isNotifiedJustBefore?: boolean
 }
+
+const token = JSON.parse(readFileSync(resolve("firestore-token.json"), "utf-8"))
+admin.initializeApp({ credential: admin.credential.cert(token) })
+const database = admin.firestore()
 
 export async function getContests(): Promise<ContestData[]> {
   const url = "https://atcoder.jp/contests/?lang=ja"
@@ -26,4 +31,16 @@ export async function getContests(): Promise<ContestData[]> {
       return { date, title }
     },
   )
+}
+
+export async function getSavedContests(): Promise<ContestData[]> {
+  const data = await database.collection("contest-upcoming").get()
+  const returnData: ContestData[] = []
+  data.forEach((doc) => {
+    const title = doc.data().title
+    const date = doc.data().date
+    if (!title || !date) return
+    returnData.push({ date: moment(date.toDate()), title })
+  })
+  return returnData
 }

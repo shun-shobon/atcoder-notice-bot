@@ -10,6 +10,8 @@ interface ContestData {
   title: string
 }
 
+const contestSavePath = "contest-upcoming"
+
 const token = JSON.parse(readFileSync(resolve("firestore-token.json"), "utf-8"))
 admin.initializeApp({ credential: admin.credential.cert(token) })
 const database = admin.firestore()
@@ -34,7 +36,7 @@ export async function getContests(): Promise<ContestData[]> {
 }
 
 export async function getSavedContests(): Promise<ContestData[]> {
-  const data = await database.collection("contest-upcoming").get()
+  const data = await database.collection(contestSavePath).get()
   const returnData: ContestData[] = []
   data.forEach((doc) => {
     const title = doc.data().title

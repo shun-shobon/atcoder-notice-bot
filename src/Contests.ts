@@ -61,7 +61,7 @@ export function getUnsavedContests(
 }
 
 export async function saveContests(contests: ContestData[]): Promise<void> {
-  const savePromise = contests.map((contest) =>
+  const savePromise = contests.map((contest: ContestData) =>
     database.collection(contestSavePath).add({
       date: contest.date.toDate(),
       title: contest.title,

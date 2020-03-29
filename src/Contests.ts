@@ -47,9 +47,10 @@ export async function getSavedContests(): Promise<ContestData[]> {
   return returnData
 }
 
-export async function getUnsavedContests(): Promise<ContestData[]> {
-  const savedContests = await getSavedContests()
-  const contests = await getContests()
+export function getUnsavedContests(
+  contests: ContestData[],
+  savedContests: ContestData[],
+): ContestData[] {
   if (!savedContests.length) return contests
   return contests.filter((contest: ContestData): boolean =>
     savedContests.some(

@@ -117,3 +117,5 @@ dist
 .pnp.*
 
 
+# token
+firestore-token.json

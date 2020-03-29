@@ -32,6 +32,9 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
+    "@types/jsdom": "^16.1.1",
+    "@types/request": "^2.48.4",
+    "@types/request-promise": "^4.1.46",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "commitizen": "^4.0.3",
@@ -46,6 +49,11 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "firebase-admin": "^8.10.0",
+    "jsdom": "^16.2.1",
+    "moment": "^2.24.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
     "tsconfig-paths": "^3.9.0"
   }
 }

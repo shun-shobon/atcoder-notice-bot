@@ -6,12 +6,14 @@
     "node": "10"
   },
   "scripts": {
-    "start": "yarn shell",
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "serve": "yarn build && firebase emulators:start --only functions",
-    "shell": "yarn build && firebase functions:shell",
-    "deploy": "yarn build && firebase deploy --only functions",
+    "build:functions": "yarn workspace functions build",
+    "dev:functions": "yarn workspace functions dev",
+    "serve:functions": "yarn workspace functions serve",
+    "shell:functions": "yarn workspace functions shell",
+    "deploy:functions": "yarn workspace functions deploy",
+    "build:hosting": "yarn workspace hosting build",
+    "serve:hosting": "yarn workspace hosting serve",
+    "deploy:hosting": "yarn workspace hosting deploy",
     "lint": "yarn prettier && yarn eslint",
     "lint:fix": "yarn prettier:fix && yarn eslint:fix",
     "eslint": "eslint --ignore-path .gitignore '**/*.{ts,js}'",
@@ -36,12 +38,13 @@
       "path": "cz-conventional-changelog-ja"
     }
   },
+  "workspaces": [
+    "functions",
+    "hosting"
+  ],
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@types/jsdom": "^16.1.1",
-    "@types/request": "^2.48.4",
-    "@types/request-promise": "^4.1.46",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "commitizen": "^4.0.3",
@@ -57,12 +60,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "^1.6.0",
     "firebase-admin": "^8.10.0",
-    "firebase-functions": "^3.5.0",
-    "jsdom": "^16.2.1",
-    "moment": "^2.24.0",
-    "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "firebase-functions": "^3.5.0"
   }
 }

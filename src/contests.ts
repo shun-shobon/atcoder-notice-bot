@@ -53,11 +53,12 @@ function getUnsavedContests(
   savedContests: ContestData[],
 ): ContestData[] {
   if (!savedContests.length) return contests
-  return contests.filter((contest: ContestData): boolean =>
-    savedContests.some(
-      (savedContest: ContestData): boolean =>
-        savedContest.title !== contest.title,
-    ),
+  return contests.filter(
+    (contest: ContestData): boolean =>
+      !savedContests.some(
+        (savedContest: ContestData): boolean =>
+          savedContest.title === contest.title,
+      ),
   )
 }
 

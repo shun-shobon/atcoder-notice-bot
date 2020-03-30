@@ -1,10 +1,11 @@
 {
-  "name": "hostings",
+  "name": "hosting",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "deploy": "yarn build && firebase deploy --only hosting"
   },
   "dependencies": {
     "core-js": "^3.6.4",

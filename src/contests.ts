@@ -11,7 +11,6 @@ interface ContestData {
 }
 
 const contestSavePath = "contest-upcoming"
-const scrapingTopicName = "cron-scraping"
 const publishTopicName = "publish"
 
 const database = admin.firestore()
@@ -87,8 +86,9 @@ async function publishContests(contests: ContestData[]): Promise<void> {
 
 export default functions
   .region("asia-northeast1")
-  .pubsub.topic(scrapingTopicName)
-  .onPublish(
+  .pubsub.schedule("*/15 * * * *")
+  .timeZone("Asia/Tokyo")
+  .onRun(
     async (): Promise<void> => {
       const [contests, savedContests] = await Promise.all([
         getContests(),

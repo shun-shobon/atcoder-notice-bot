@@ -37,7 +37,7 @@
   },
   "workspaces": [
     "functions",
-    "hostings"
+    "hosting"
   ],
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",

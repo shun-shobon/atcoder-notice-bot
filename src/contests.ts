@@ -3,6 +3,7 @@ import request from "request-promise"
 import * as admin from "firebase-admin"
 import * as functions from "firebase-functions"
 import { JSDOM } from "jsdom"
+import { PubSub } from "@google-cloud/pubsub"
 
 interface ContestData {
   date: moment.Moment
@@ -10,9 +11,11 @@ interface ContestData {
 }
 
 const contestSavePath = "contest-upcoming"
-const pubTopicName = "cron-scraping"
+const scrapingTopicName = "cron-scraping"
+const publishTopicName = "publish"
 
 const database = admin.firestore()
+const pubSubClient = new PubSub()
 
 async function getContests(): Promise<ContestData[]> {
   const url = "https://atcoder.jp/contests/?lang=ja"
@@ -68,19 +71,33 @@ async function saveContests(contests: ContestData[]): Promise<void> {
   await Promise.all(savePromise)
 }
 
+async function publishContests(contests: ContestData[]): Promise<void> {
+  const publishPromise = contests.map(
+    (contest: ContestData): Promise<string> => {
+      return pubSubClient
+        .topic(publishTopicName)
+        .publish(Buffer.from(JSON.stringify(contest)))
+    },
+  )
+  return Promise.all(publishPromise).then((messageId: string[]): void =>
+    messageId.forEach(console.log),
+  )
+}
+
 export default functions
   .region("asia-northeast1")
-  .pubsub.topic(pubTopicName)
+  .pubsub.topic(scrapingTopicName)
   .onPublish(
-    (): Promise<void> => {
-      const contestsPromise = getContests()
-      const savedContestsPromise = getSavedContests()
-      return Promise.all([contestsPromise, savedContestsPromise]).then(
-        ([contests, savedContests]: ContestData[][]) => {
-          const unsavedContests = getUnsavedContests(contests, savedContests)
-          console.log(unsavedContests)
-          return saveContests(unsavedContests)
-        },
-      )
+    async (): Promise<void> => {
+      const [contests, savedContests] = await Promise.all([
+        getContests(),
+        getSavedContests(),
+      ])
+      const unsavedContests = getUnsavedContests(contests, savedContests)
+      unsavedContests.forEach((contest: ContestData) => console.log(contest))
+      await Promise.all([
+        saveContests(unsavedContests),
+        publishContests(unsavedContests),
+      ])
     },
   )

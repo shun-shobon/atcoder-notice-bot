@@ -1,4 +1,4 @@
-# hostings
+# hosting
 
 ## Project setup
 ```

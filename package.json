@@ -18,7 +18,7 @@
     "lint:fix": "yarn prettier:fix && yarn eslint:fix",
     "eslint": "eslint --ignore-path .gitignore '**/*.{ts,js}'",
     "eslint:fix": "yarn eslint --fix",
-    "prettier": "prettier --check --ignore-path .gitignore '**/*.json'",
+    "prettier": "prettier --check --ignore-path .gitignore '**/*.{vue,json}'",
     "prettier:fix": "yarn prettier --write",
     "cz": "git-cz"
   },

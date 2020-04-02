@@ -1,7 +1,9 @@
 <template>
   <div id="line-signup">
     <b>{{ message }}</b>
-    <button v-if="homeButton" class="home" @click="returnHome">ホームに戻る</button>
+    <button v-if="homeButton" class="home" @click="returnHome">
+      ホームに戻る
+    </button>
   </div>
 </template>
 
@@ -55,15 +57,18 @@ export default Vue.extend({
       this.homeButton = true
       return
     }
-    this.axios.post(process.env.VUE_APP_LINE_TOKEN_ISSUE_URL, {
-      code: paramCode,
-    }).then(() => {
-      this.message = "処理が完了しました。"
-      this.homeButton = true
-    }).catch(() => {
-      this.message = "エラーが発生しました。もう一度やり直してください。"
-      this.homeButton = true
-    })
+    this.axios
+      .post(process.env.VUE_APP_LINE_TOKEN_ISSUE_URL, {
+        code: paramCode,
+      })
+      .then(() => {
+        this.message = "処理が完了しました。"
+        this.homeButton = true
+      })
+      .catch(() => {
+        this.message = "エラーが発生しました。もう一度やり直してください。"
+        this.homeButton = true
+      })
   },
   methods: {
     returnHome(): void {

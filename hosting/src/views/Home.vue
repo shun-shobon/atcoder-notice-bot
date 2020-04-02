@@ -3,7 +3,7 @@
     <b class="description">
       AtCoderのコンテストについてお知らせします。現在はLINEのみ対応です。
     </b>
-    <button class="signup-line">LINEで登録</button>
+    <button class="signup-line" @click="signupLine">LINEで登録</button>
   </div>
 </template>
 
@@ -41,3 +41,25 @@
   }
 }
 </style>
+
+<script lang="ts">
+import { Vue } from "vue-property-decorator"
+
+export default Vue.extend({
+  name: "Home",
+  methods: {
+    signupLine(): void {
+      const url = "https://notify-bot.line.me/oauth/authorize"
+      const state = Math.random().toString(36).slice(-10)
+      const params = new URLSearchParams()
+      params.append("response_type", "code")
+      params.append("client_id", process.env.VUE_APP_LINE_CLIENT_ID)
+      params.append("redirect_uri", location.href + "line/signup")
+      params.append("scope", "notify")
+      params.append("state", state)
+      this.$store.dispatch("setLoginState", { loginState: state })
+      location.href = `${url}?${params.toString()}`
+    },
+  }
+})
+</script>

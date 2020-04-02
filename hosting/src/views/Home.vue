@@ -50,9 +50,7 @@ export default Vue.extend({
   methods: {
     signupLine(): void {
       const url = "https://notify-bot.line.me/oauth/authorize"
-      const state = Math.random()
-        .toString(36)
-        .slice(-10)
+      const state = Math.random().toString(36).slice(-10)
       const params = new URLSearchParams()
       params.append("response_type", "code")
       params.append("client_id", process.env.VUE_APP_LINE_CLIENT_ID)

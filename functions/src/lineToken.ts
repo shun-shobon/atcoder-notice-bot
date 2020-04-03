@@ -45,8 +45,28 @@ async function getToken(code: string): Promise<string> {
   return res.access_token
 }
 
+async function revokeToken(token: string): Promise<void> {
+  const options = {
+    uri: "https://notify-api.line.me/api/revoke",
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${token}`,
+    },
+  }
+  await request.post(options)
+}
+
 function saveToken(token: string): Promise<admin.firestore.DocumentReference> {
   return database.collection(tokenSavePath).add({ token })
+}
+
+async function restoreToken(tokenId: string): Promise<void> {
+  await database.collection(tokenSavePath).doc(tokenId).delete()
+}
+
+async function getTokenFromDocId(tokenId: string): Promise<string> {
+  const doc = await database.collection(tokenSavePath).doc(tokenId).get()
+  return doc.data()?.token || undefined
 }
 
 async function publishWelcomeMessage(
@@ -73,7 +93,7 @@ ${revokeTokenUrl}`
   await request.post(options)
 }
 
-export default functions
+export const issue = functions
   .region("asia-northeast1")
   .https.onRequest((req, res) => {
     return cors(req, res, async () => {
@@ -104,6 +124,36 @@ export default functions
       return res.status(200).json({
         status: 200,
         message: "token is issued",
+      })
+    })
+  })
+
+export const revoke = functions
+  .region("asia-northeast1")
+  .https.onRequest((req, res) => {
+    return cors(req, res, async () => {
+      const id = req.body.id
+      if (!id) {
+        return res.status(400).json({
+          status: 400,
+          message: "invalid id",
+        })
+      }
+      try {
+        const token = await getTokenFromDocId(id)
+        if (token) {
+          await revokeToken(token)
+          await restoreToken(id)
+        }
+      } catch {
+        return res.status(400).json({
+          status: 400,
+          message: "invalid id",
+        })
+      }
+      return res.status(200).json({
+        status: 200,
+        message: "token is revoked",
       })
     })
   })

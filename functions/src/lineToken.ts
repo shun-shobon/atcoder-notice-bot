@@ -45,8 +45,32 @@ async function getToken(code: string): Promise<string> {
   return res.access_token
 }
 
-async function saveToken(token: string): Promise<void> {
-  await database.collection(tokenSavePath).add({ token })
+function saveToken(token: string): Promise<admin.firestore.DocumentReference> {
+  return database.collection(tokenSavePath).add({ token })
+}
+
+async function publishWelcomeMessage(
+  token: string,
+  tokenId: string,
+): Promise<void> {
+  const revokeTokenUrl = `${functions.config().line.url}/line/revoke/${tokenId}`
+
+  const message = `登録が完了しました。
+
+通知の解除をしたい場合はこちらからどうぞ
+${revokeTokenUrl}`
+
+  const options = {
+    uri: "https://notify-api.line.me/api/notify",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${token}`,
+    },
+    form: {
+      message,
+    },
+  }
+  await request.post(options)
 }
 
 export default functions
@@ -75,7 +99,8 @@ export default functions
           message: "invalid code",
         })
       }
-      await saveToken(token)
+      const doc = await saveToken(token)
+      await publishWelcomeMessage(token, doc.id)
       return res.status(200).json({
         status: 200,
         message: "token is issued",

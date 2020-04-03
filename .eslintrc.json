@@ -1,26 +1,32 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:prettier/recommended",
-    "prettier/@typescript-eslint"
-  ],
-  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "env": {
     "node": true,
     "es6": true
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2017
+    "ecmaVersion": 2020
   },
   "overrides": [
     {
-      "files": ["*.js"],
-      "rules": {
-        "@typescript-eslint/no-var-requires": "off"
-      }
+      "files": ["*.ts"],
+      "plugins": ["@typescript-eslint"],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "prettier/@typescript-eslint"
+      ]
+    },
+    {
+      "files": ["*.vue"],
+      "extends": [
+        "plugin:vue/essential",
+        "@vue/prettier",
+        "@vue/typescript",
+        "prettier/@typescript-eslint"
+      ]
     }
   ]
 }

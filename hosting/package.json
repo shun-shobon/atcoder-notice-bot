@@ -8,18 +8,24 @@
     "deploy": "yarn build && firebase deploy --only hosting"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
+    "vue-axios": "^2.1.5",
     "vue-class-component": "^7.2.2",
     "vue-property-decorator": "^8.3.0",
-    "vue-router": "^3.1.5"
+    "vue-router": "^3.1.5",
+    "vuex": "^3.1.2",
+    "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
     "@o3o/vue-cli-plugin-packages": "~0.3.2",
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-router": "~4.2.0",
     "@vue/cli-plugin-typescript": "~4.2.0",
+    "@vue/cli-plugin-vuex": "~4.2.0",
     "@vue/cli-service": "~4.2.0",
+    "reset-css": "^5.0.1",
     "sass": "^1.25.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.7.5",

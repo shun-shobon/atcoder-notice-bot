@@ -3,5 +3,7 @@ import * as functions from "firebase-functions"
 admin.initializeApp(functions.config().firebase)
 
 import contests from "./contests"
+import lineToken from "./lineToken"
 
 export const scrapingContests = contests
+export const issueLineToken = lineToken

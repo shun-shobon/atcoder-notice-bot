@@ -1,4 +1,4 @@
-import moment from "moment"
+import moment from "moment-timezone"
 import request from "request-promise"
 import * as admin from "firebase-admin"
 import * as functions from "firebase-functions"
@@ -34,7 +34,7 @@ async function publishToLine(
   contest: ContestData,
   tokenData: Token,
 ): Promise<void> {
-  const strDate = contest.date.format("M月D日HH時mm分")
+  const strDate = contest.date.tz("Asia/Tokyo").format("M月D日HH時mm分")
   const title = contest.title
   const tokenId = tokenData.id
   const token = tokenData.token

@@ -66,3 +66,16 @@ function parsePubSubData(data: functions.pubsub.Message): ContestData {
     title,
   }
 }
+
+export default functions
+  .region("asia-northeast1")
+  .pubsub.topic(publishTopicName)
+  .onPublish(async (message) => {
+    const contest = parsePubSubData(message)
+    const tokens = await getLineTokens()
+    const publishPromise: Promise<void>[] = []
+    tokens.forEach((token) => {
+      publishPromise.push(publishToLine(contest, token))
+    })
+    await Promise.all(publishPromise)
+  })

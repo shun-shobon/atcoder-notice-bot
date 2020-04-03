@@ -4,6 +4,8 @@ admin.initializeApp(functions.config().firebase)
 
 import contests from "./contests"
 import lineToken from "./lineToken"
+import publish from "./publish"
 
 export const scrapingContests = contests
 export const issueLineToken = lineToken
+export const publishMessage = publish

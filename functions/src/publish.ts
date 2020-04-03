@@ -14,6 +14,7 @@ interface Token {
 }
 
 const lineTokenSavePath = "line-token"
+const publishTopicName = "publish"
 
 const database = admin.firestore()
 
@@ -55,4 +56,13 @@ ${strDate}に${title}が開催されます！
     },
   }
   await request.post(options)
+}
+
+function parsePubSubData(data: functions.pubsub.Message): ContestData {
+  const strDate = data.json.date
+  const title = data.json.title
+  return {
+    date: moment(strDate),
+    title,
+  }
 }

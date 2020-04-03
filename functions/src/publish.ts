@@ -1,4 +1,12 @@
+import moment from "moment"
+import request from "request-promise"
 import * as admin from "firebase-admin"
+import * as functions from "firebase-functions"
+
+interface ContestData {
+  date: moment.Moment
+  title: string
+}
 
 interface Token {
   id: string
@@ -19,4 +27,32 @@ async function getLineTokens(): Promise<Token[]> {
     returnArray.push({ id, token })
   })
   return returnArray
+}
+
+async function publishToLine(
+  contest: ContestData,
+  tokenData: Token,
+): Promise<void> {
+  const strDate = contest.date.format("M月D日HH時mm分")
+  const title = contest.title
+  const tokenId = tokenData.id
+  const token = tokenData.token
+  const revokeTokenUrl = `${functions.config().line.url}/line/revoke/${tokenId}`
+
+  const message = `開催通知
+${strDate}に${title}が開催されます！
+
+通知の解除はこちらから=> ${revokeTokenUrl}`
+
+  const options = {
+    uri: "https://notify-api.line.me/api/notify",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${token}`,
+    },
+    form: {
+      message,
+    },
+  }
+  await request.post(options)
 }

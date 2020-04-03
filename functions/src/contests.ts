@@ -69,7 +69,7 @@ function getUpcomingContests(contests: ContestData[]): ContestData[] {
     const contestMoment = contest.date.tz("Asia/Tokyo")
     const contestMonth = contestMoment.get("month")
     const contestDate = contestMoment.get("date")
-    return (nowMonth === contestMonth && nowDate === contestDate)
+    return nowMonth === contestMonth && nowDate === contestDate
   })
 }
 

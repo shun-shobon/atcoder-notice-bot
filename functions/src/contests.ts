@@ -61,6 +61,18 @@ function getUnsavedContests(
   )
 }
 
+function getUpcomingContests(contests: ContestData[]): ContestData[] {
+  const now = moment().tz("Asia/Tokyo")
+  const nowMonth = now.get("month")
+  const nowDate = now.get("date")
+  return contests.filter((contest) => {
+    const contestMoment = contest.date.tz("Asia/Tokyo")
+    const contestMonth = contestMoment.get("month")
+    const contestDate = contestMoment.get("date")
+    return (nowMonth === contestMonth && nowDate === contestDate)
+  })
+}
+
 async function saveContests(contests: ContestData[]): Promise<void> {
   const savePromise = contests.map((contest: ContestData) =>
     database.collection(contestSavePath).add({
@@ -84,7 +96,7 @@ async function publishContests(contests: ContestData[]): Promise<void> {
   )
 }
 
-export default functions
+export const scrapingContest = functions
   .region("asia-northeast1")
   .pubsub.schedule("*/15 * * * *")
   .timeZone("Asia/Tokyo")
@@ -102,3 +114,13 @@ export default functions
       ])
     },
   )
+
+export const publishUpcomingContest = functions
+  .region("asia-northeast1")
+  .pubsub.schedule("0 7 * * *")
+  .timeZone("Asia/Tokyo")
+  .onRun(async () => {
+    const savedContests = await getSavedContests()
+    const upcomingContests = await getUpcomingContests(savedContests)
+    await publishContests(upcomingContests)
+  })

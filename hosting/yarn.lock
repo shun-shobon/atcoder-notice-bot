@@ -851,8 +851,8 @@
 
 "@o3o/vue-cli-plugin-packages@~0.3.2":
   version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@o3o/vue-cli-plugin-packages/-/vue-cli-plugin-packages-0.3.2.tgz#3d558254ce4de51006faacde3e11f58565b6b0fc"
-  integrity sha512-cEjNhTHms3R5bTH6blNq32yN4i2da+qxQHkv1rPLmHF4s/IPQ4bzflLu8P9Ald56rXqIAyh18IEKJGN5ak7QqQ==
+  resolved "https://registry.npm.taobao.org/@o3o/vue-cli-plugin-packages/download/@o3o/vue-cli-plugin-packages-0.3.2.tgz#3d558254ce4de51006faacde3e11f58565b6b0fc"
+  integrity sha1-PVWCVM5N5RAG+qzePhH1hWW2sPw=
 
 "@soda/friendly-errors-webpack-plugin@^1.7.1":
   version "1.7.1"
